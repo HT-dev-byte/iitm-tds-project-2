@@ -12,7 +12,7 @@ A FastAPI-based agent that solves data-centric quizzes automatically for the "LL
 **POST /solve**
 
 ### Example Request
-```bash
+```bash 
 curl -X POST https://llm-quiz-solver.onrender.com/solve \
 -H "Content-Type: application/json" \
 -d '{
@@ -20,4 +20,5 @@ curl -X POST https://llm-quiz-solver.onrender.com/solve \
   "secret": "secret",
   "url": "https://tds-llm-analysis.s-anand.net/demo"
 }'
+
 

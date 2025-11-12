@@ -17,6 +17,7 @@ curl -X POST https://llm-quiz-solver.onrender.com/solve \
 -H "Content-Type: application/json" \
 -d '{
   "email": "you@example.com",
-  "secret": "k3v1n_secret_2025",
+  "secret": "secret",
   "url": "https://tds-llm-analysis.s-anand.net/demo"
 }'
+

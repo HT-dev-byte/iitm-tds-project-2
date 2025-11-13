@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+# uvicorn main:app --reload
+
 # ---------------- CONFIG ----------------
 API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IjI1ZjEwMDEzMThAZHMuc3R1ZHkuaWl0bS5hYy5pbiJ9.0P1SCJvYs5BIn8QTSNSSKCnofhTM_1g7VAvzv4l4JiM"
 SECRET = "k3v1n_secret_2025"
@@ -44,25 +46,42 @@ def decode_base64_payload(html: str) -> str:
 
 # ---------------- LLM CLIENT ----------------
 class AIpipeLLM:
-    """Wrapper for AIpipe API calls."""
+    """Wrapper for AIPipe OpenRouter API calls."""
     def __init__(self, api_key, model="gpt-5"):
         self.api_key = api_key
         self.model = model
-        self.endpoint = "https://api.aipipe.com/v1/generate"
+        self.endpoint = "https://aipipe.org/openrouter/v1/responses"
 
     def generate(self, prompt: str, system_prompt: str = None, user_prompt: str = None) -> dict:
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+        headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
         full_prompt = ""
         if system_prompt:
             full_prompt += f"System: {system_prompt}\n"
         if user_prompt:
             full_prompt += f"User: {user_prompt}\n"
         full_prompt += prompt
-        payload = {"model": self.model, "prompt": full_prompt, "max_tokens": 1024}
-        resp = requests.post(self.endpoint, json=payload, headers=headers, timeout=30)
-        resp.raise_for_status()
-        return resp.json()
 
+        payload = {
+            "model": self.model,
+            "input": full_prompt
+        }
+
+        try:
+            resp = requests.post(self.endpoint, json=payload, headers=headers, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            return {"text": f"Error calling LLM: {str(e)}"}
+
+        # Extract the generated text
+        try:
+            generated_text = data["output"][0]["content"]["text"]
+        except (KeyError, IndexError):
+            generated_text = ""
+
+        return {"text": generated_text}
+
+# Instantiate global LLM object
 llm = AIpipeLLM(API_KEY, LLM_MODEL)
 
 # ---------------- QUIZ SOLVER ----------------

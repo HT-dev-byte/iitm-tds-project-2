@@ -4,9 +4,8 @@ A FastAPI-based agent that solves data-centric quizzes automatically for the "LL
 
 ## 🚀 Features
 - Verifies secrets for secure access
-- Renders JavaScript quiz pages using Playwright
+- Uses AIpipe for LLM utilization
 - Fetches data, computes answers, and submits automatically
-- Modular design for future extensions
 
 ## 🧩 Endpoint
 **POST /solve**

@@ -4,3 +4,5 @@ httpx
 playwright
 pandas
 requests
+beautifulsoup4
+bs4

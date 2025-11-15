@@ -14,7 +14,7 @@ A FastAPI-based agent that solves data-centric quizzes automatically for the "LL
 ```PowerShell
 $body = @{
     email = "you@example.com"
-    secret = "k3v1n_secret_2025"
+    secret = "secret"
     url = "https://tds-llm-analysis.s-anand.net/demo"
 } | ConvertTo-Json
 

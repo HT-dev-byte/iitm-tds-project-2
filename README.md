@@ -8,7 +8,7 @@ A FastAPI-based agent that solves data-centric quizzes automatically for the "LL
 - Fetches data, computes answers, and submits automatically
 
 ## 🧩 Endpoint
-**POST /solve**
+**POST /solve_quiz**
 
 ### Example Request
 ```PowerShell

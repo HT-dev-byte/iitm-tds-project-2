@@ -1,13 +1,21 @@
-FROM mcr.microsoft.com/playwright/python:v1.42.0-jammy
+# MUST use the Playwright runtime image
+FROM mcr.microsoft.com/playwright/python:v1.56.0-jammy
 
+# Make working directory
 WORKDIR /app
 
-COPY requirements.txt .
+# Copy requirements first
+COPY requirements.txt /app/
+
+# Install dependencies (Playwright browsers already included)
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy all project files
+COPY . /app
 
-ENV PORT=8000
+# Expose port
 EXPOSE 8000
 
-CMD ["sh", "-c", "playwright install --with-deps chromium && uvicorn main:app --host 0.0.0.0 --port $PORT"]
+# Run FastAPI app with uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+

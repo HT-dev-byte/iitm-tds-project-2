@@ -1,10 +1,16 @@
-    FROM python:3.9-slim-buster
+FROM mcr.microsoft.com/playwright/python:v1.56.0-jammy
 
-    WORKDIR /app
+WORKDIR /app
 
-    COPY requirements.txt .
-    RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
 
-    COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
 
-    CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+COPY . .
+
+# playwright browsers already installed in this image
+ENV PORT=8080
+
+EXPOSE 8080
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
